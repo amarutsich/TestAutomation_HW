@@ -6,8 +6,11 @@ export class BaseApplicationPage extends BasePage{
     }
 
     BaseContainers = {
-        CategoriesList: this.page.locator(".navCat"),
-        CatalogMain: this.page.locator(".catalog-main")
+        Header: this.page.locator("#header-shellArea")
+    }
+
+    HeaderElements = {
+        HomeButton: this.BaseContainers.Header.locator("#shell-header-logo")
     }
 
 }
