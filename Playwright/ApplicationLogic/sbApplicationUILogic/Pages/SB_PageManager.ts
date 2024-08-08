@@ -9,7 +9,7 @@ import { NewSubscriptionForm } from "../Components/NewSubscriptionForm/NewSubscr
 import { CreatedSubscriptionForm } from "../Components/ManageSubscribtions/CreatedSubscriptionForm";
 import { ManageBillingDataPage } from "../Components/ManageBillingData/ManageBillingDataPage";
 
-export class PageManager {
+export class SB_PageManager {
     page: Page;
     loginPageStep1;
     loginPageStep2;
