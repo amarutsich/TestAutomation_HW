@@ -5,7 +5,6 @@ import { expect } from "@playwright/test"
 
 test.describe("Save a quote", () => {
     test.beforeEach(async ({cpqPageManager}) => {
-        await cpqPageManager.page.goto("https://claritylabs-tst.cpq.cloud.sap/Login.aspx");
 
         await cpqPageManager.loginPage.Form.Username.fill("aleonenko");
 
@@ -15,6 +14,7 @@ test.describe("Save a quote", () => {
     });
 
     test("Save quote with ASUS Zan", async ({cpqPageManager}) => { 
+        test.slow();
 
         await OpenSubcategory({cpqPageManager}, "QA: Hardware", "QA:Laptops");
 

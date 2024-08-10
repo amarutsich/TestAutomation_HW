@@ -5,7 +5,6 @@ import { expect } from "@playwright/test"
 
 test.describe("Create Subscription", () => {
     test.beforeEach(async ({sbPageManager}) => {
-        await sbPageManager.page.goto("https://test-idp.eu10.revenue.cloud.sap/launchpad#Shell-home");
 
         await sbPageManager.loginPageStep1.Form.Login.fill("anton.leonenko@clarity.cx");
 
