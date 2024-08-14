@@ -19,4 +19,22 @@ export class ManageBillingDataPage extends BaseApplicationPage{
     Buttons = {
         GoButton : this.Containers.FiltersSection.locator('span[id*="billOverviewPageHeaderFilterBar-btnGo-inner"]')
     }
+
+    async searchForBills(market : string, subscriptionID : string){
+        await this.Fields.MarketsFilter.press("Control+A");
+
+        await this.Fields.MarketsFilter.press("Backspace");
+
+        await this.Fields.MarketsFilter.fill(market);
+
+        await this.page.keyboard.press("Enter");
+
+        await this.Fields.SubscriptionIdFilter.click();
+
+        await this.Fields.SubscriptionIdFilter.fill(subscriptionID);
+
+        await this.page.keyboard.press("Enter");
+
+        await this.Buttons.GoButton.click();
+    }
 }

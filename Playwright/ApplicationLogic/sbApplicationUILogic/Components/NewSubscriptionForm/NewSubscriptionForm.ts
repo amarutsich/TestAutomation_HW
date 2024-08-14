@@ -48,4 +48,51 @@ export class NewSubscriptionForm extends BaseApplicationPage{
         SkipDuringPauseCheckbox : this.page.locator("#application-Subscriptions-list-component---subscriptionView--notificationsView--notificationDialogView--tagsMultiInput-inner"),  
         CreateButton : this.page.locator("#application-Subscriptions-list-component---subscriptionView--notificationsView--notificationDialogView--createButton")
     }
+
+    async createNewSubscription(todayDate : string, todayDatePlusYear : string) {
+        await this.Fields.CustomerPurchaseReference.fill("Customer Reference");
+
+        await this.Fields.ReferenceDate.fill(todayDate);
+
+        await this.Fields.WithdrawalPeriod.fill("12");
+
+        await this.Fields.TermOfNotice.fill("5");
+
+        await this.Fields.MinimumTerm.fill("5");
+
+        await this.Fields.RenewalTerm.fill("2");
+
+        await this.Fields.ExpectedTerm.fill("10");
+
+        await this.Fields.BillRecurringChargesTogether.fill("1");
+
+        await this.Fields.BillingCutoverDate.fill(todayDate);
+
+        await this.page.keyboard.press("Enter");
+
+        await this.Buttons.CreateCustomReferece.click();
+
+        await this.Fields.FirstReferenceType.fill("CustomerID");
+
+        await this.Fields.FirstID.fill("1");
+
+        await this.Buttons.CreatePauseSchedule.click();
+
+        await this.Fields.FirstPauseDate.fill(todayDate);
+
+        await this.Fields.FirstResumeData.fill(todayDatePlusYear);
+
+        await this.Fields.FirstReasonforPause.fill("Suspension");
+
+        await this.Buttons.CreateNotification.click();
+
+        await this.NewNotificationPopup.TagsField.fill("Tag");
+
+        await this.NewNotificationPopup.SkipDuringPauseCheckbox.click();
+
+        await this.NewNotificationPopup.CreateButton.click();
+
+        await this.Buttons.CreateSubscription.click();
+
+    }
 }

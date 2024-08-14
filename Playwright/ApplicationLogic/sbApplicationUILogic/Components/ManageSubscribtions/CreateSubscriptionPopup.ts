@@ -33,4 +33,26 @@ export class CreateSubscriptionPopup extends BaseApplicationPage{
         Continue : this.page.locator("#application-Subscriptions-list-component---subscriptionListView--createSubscriptionView--btnCreateSubscriptionOkDialog-BDI-content")
     }
 
+    async fillInCreateSubscriptionPopup(todayDate : string){
+        await this.SelectHelpButtons.CustomerSearchHelp.click();
+
+        await this.Selections.FirstCustomer.click();
+
+        await this.SelectHelpButtons.MarketDropdown.click();
+
+        await this.Selections.FirstMarket.click();
+
+        const market = await this.Fields.MarketField.getAttribute("value");
+
+        await this.SelectHelpButtons.ProductSearchHelp.click();
+
+        await this.Selections.FirstProduct.click();
+
+        await this.Fields.ValidFromField.fill(todayDate);
+
+        await this.Buttons.Continue.click();
+
+        return market;
+    }
+
 }

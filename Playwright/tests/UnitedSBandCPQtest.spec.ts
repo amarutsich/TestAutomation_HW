@@ -3,19 +3,20 @@ import { expect } from "@playwright/test"
 
 
 
-test.describe("Save a quote", () => {
-    test.beforeEach(async ({cpqPageManager}) => {
+test.describe("United SB and CPQ test", () => {
+    test("Check that created subscription have bills", async ({sbPageManager, cpqPageManager}) => {
+        test.setTimeout(200000);
 
-        await cpqPageManager.loginPage.Form.Username.fill("aleonenko");
+        //First SB part
+        await sbPageManager.homePage.Tiles.ManageSubscriptions.click();
 
-        await cpqPageManager.loginPage.Form.Password.fill("StrongPassword123!");
+        await sbPageManager.manageSubscriptionsPage.Buttons.Create.click();
 
-        await cpqPageManager.loginPage.Form.LoginButton.click();
-    });
+        const market = await sbPageManager.createSubscriptionPopup.fillInCreateSubscriptionPopup(todayDate());
 
-    test("Save quote with ASUS Zan", async ({cpqPageManager}) => { 
-        test.slow();
+        await sbPageManager.newSubscriptionForm.createNewSubscription(todayDate(), todayDatePlusYear());
 
+        //First CPQ part
         await OpenSubcategory(cpqPageManager, "QA: Hardware", "QA:Laptops");
 
         await PerformActionInCatalog(cpqPageManager, "ASUS Zan", "Configure");
@@ -24,8 +25,16 @@ test.describe("Save a quote", () => {
 
         await cpqPageManager.aSUS_Zan.SelectAttributes.SelectOpticalDrive("DVD12X");
 
-        await cpqPageManager.page.waitForTimeout(2000); //price of product is updated with delay
+        //Second SB part
+        const subscriptionID = await sbPageManager.createdSubscriptionForm.Fields.SubscriptionID.innerText();
 
+        await sbPageManager.baseApplicationPage.HeaderElements.HomeButton.click();
+
+        await sbPageManager.homePage.Tiles.ManageBillingData.click();
+
+        await sbPageManager.manageBillingDataPage.searchForBills(market, subscriptionID);
+
+        //Second CPQ part
         let price = await cpqPageManager.productConfigurationPage.Fields.Total.innerText();
 
         price = price.slice(1);
@@ -44,8 +53,39 @@ test.describe("Save a quote", () => {
 
         await cpqPageManager.quoteConfigurationPage.Buttons.SaveQuote.click();
 
-    })
+        //Last SB part
+        let billsQuantity = await sbPageManager.manageBillingDataPage.Fields.BillsCounter.innerText();
+
+        billsQuantity = Number(billsQuantity.slice(7, -1));
+
+        await expect(billsQuantity).toBeGreaterThan(0); 
+
+        
+     })
+    
 })
+
+const todayDate = () => {
+
+    const date = new Date();
+
+    const strDate = (date.getMonth() + 1).toString().padStart(2, "0") +
+    date.getDate().toString().padStart(2, "0") + 
+    date.getFullYear().toString();
+
+    return strDate;
+}
+
+const todayDatePlusYear = () => {
+
+    const date = new Date();
+
+    const strDate = (date.getMonth() + 1).toString().padStart(2, "0") +
+    date.getDate().toString().padStart(2, "0") + 
+    (date.getFullYear() + 1).toString();
+
+    return strDate;
+}
 
 const OpenSubcategory = async (cpqPageManager, category : string, subcategory : string) => {
 

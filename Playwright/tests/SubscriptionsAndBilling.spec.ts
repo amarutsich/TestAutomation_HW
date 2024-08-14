@@ -12,7 +12,7 @@ test.describe("Create Subscription", () => {
 
         await sbPageManager.loginPageStep2.Form.Password.fill("Greedis9good");
 
-        await sbPageManager.loginPageStep2.Form.SignInButton.click()
+        await sbPageManager.loginPageStep2.Form.SignInButton.click();
     });
 
     test("Check that created subscription have bills", async ({sbPageManager}) => { 
